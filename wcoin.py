@@ -29,6 +29,7 @@ import json
 import time
 from urllib.parse import urlparse, parse_qs
 from user_agent import generate_user_agent
+import subprocess
 
 user_agent = generate_user_agent('android')
 headers = {
@@ -72,19 +73,12 @@ def check_for_updates():
 # Function to pull the latest changes from the repository
 def update_script():
     try:
-        # Use sudo if permission issues occur in pulling updates
-        result = subprocess.run(["sudo", "git", "pull"], check=True, capture_output=True, text=True)
-        print(result.stdout)  # Print output for debugging
-        
+        subprocess.run(["git", "pull"], check=True)
         print(Fore.GREEN + "Script updated successfully!")
-        # Instead of restarting the whole script, reload the current module to apply changes
         time.sleep(2)
-        os.execv(sys.executable, ['python'] + sys.argv)  # Restart script after update
-        
+        os.execv(__file__, ['python'] + sys.argv)  # Restart the script
     except subprocess.CalledProcessError as e:
         print(Fore.RED + f"Failed to update the script: {e}")
-    except PermissionError:
-        print(Fore.RED + "Permission denied: Make sure you have proper access rights to update.")
 
 # Existing functions for Wcoin and other features
 def main_wcoin(session, amount):
@@ -138,12 +132,12 @@ if __name__ == "__main__":
     social_media_usernames = [
         ("TELEGRAM", "@black_ninja_pk"),
         ("TELEGRAM", "@black_ninja_pk"),
-          
+        ("Authorization key", "@GWWT"),  # Displaying the key
         ("Coder", "@demoncratos"),
     ]
     
     print_info_box(social_media_usernames)
-    user_input = input("\nPlease Enter Wcoin Session ID : ")
+    user_input = input("\nEnter Wcoin Session ID : ")
     balance_input = input("Please Enter Coin Amount : ")
     data = main_wcoin(user_input, int(balance_input))  # Removed the key parameter
     os.system('cls' if os.name == 'nt' else 'clear')
