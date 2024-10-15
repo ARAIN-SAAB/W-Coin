@@ -158,3 +158,7 @@ if __name__ == "__main__":
     
     except:
         print(Fore.RED + Style.BRIGHT + data['error'])
+        
+        print(Fore.GREEN + Style.BRIGHT + "\nThank you for using our service!")
+    print(Fore.CYAN + "Join our Telegram channel for updates and support: @https://t.me/black_ninja_pk")
+
