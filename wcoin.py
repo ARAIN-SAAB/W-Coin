@@ -68,13 +68,13 @@ def print_info_box(social_media_usernames):
     print(Fore.WHITE + Style.BRIGHT + '+' + '-' * (box_width - 2) + '+')
 
 if __name__ == "__main__":
-    banner_text = "CRAZY"
+    banner_text = "NINJA"
     os.system('cls' if os.name == 'nt' else 'clear')
     create_gradient_banner(banner_text)
     social_media_usernames = [
-        ("CryptoNews", "@crazy_arain"),
-        ("Auto Farming", "@crazy_arain"),
-        ("Auto Farming", "@crazy_arain"),
+        ("TELEGRAM", "@black_ninja_pk"),
+        ("TELEGRAM", "@black_ninja_pk"),
+        ("Authorization key", "@GWWT"),
         #("", "@"),
         ("Coder", "@demoncratos"),
     ]
