@@ -29,7 +29,6 @@ import json
 import time
 from urllib.parse import urlparse, parse_qs
 from user_agent import generate_user_agent
-import subprocess
 
 user_agent = generate_user_agent('android')
 headers = {
@@ -73,12 +72,19 @@ def check_for_updates():
 # Function to pull the latest changes from the repository
 def update_script():
     try:
-        subprocess.run(["git", "pull"], check=True)
+        # Use sudo if permission issues occur in pulling updates
+        result = subprocess.run(["sudo", "git", "pull"], check=True, capture_output=True, text=True)
+        print(result.stdout)  # Print output for debugging
+        
         print(Fore.GREEN + "Script updated successfully!")
+        # Instead of restarting the whole script, reload the current module to apply changes
         time.sleep(2)
-        os.execv(__file__, ['python'] + sys.argv)  # Restart the script
+        os.execv(sys.executable, ['python'] + sys.argv)  # Restart script after update
+        
     except subprocess.CalledProcessError as e:
         print(Fore.RED + f"Failed to update the script: {e}")
+    except PermissionError:
+        print(Fore.RED + "Permission denied: Make sure you have proper access rights to update.")
 
 # Existing functions for Wcoin and other features
 def main_wcoin(session, amount):
