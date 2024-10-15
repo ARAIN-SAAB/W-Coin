@@ -1,17 +1,22 @@
 import os
 import subprocess
 import sys
+import importlib.util
 
 # Function to check and install required libraries
 def install_requirements():
-    required_libraries = ["pyfiglet", "colorama", "requests", "user-agent"]
-    for library in required_libraries:
-        try:
-            __import__(library)
-        except ImportError:
-            print(f"Library {library} not found. Installing...")
-            subprocess.check_call([sys.executable, "-m", "pip", "install", library])
-            print(f"{library} installed successfully.")
+    required_libraries = {
+        "pyfiglet": "pyfiglet",
+        "colorama": "colorama",
+        "requests": "requests",
+        "user_agent": "user-agent"  # 'user_agent' maps to the 'user-agent' package
+    }
+    
+    for module_name, package_name in required_libraries.items():
+        if importlib.util.find_spec(module_name) is None:
+            print(f"Library {package_name} not found. Installing...")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
+            print(f"{package_name} installed successfully.")
 
 # Call the function to check and install requirements
 install_requirements()
@@ -127,7 +132,8 @@ if __name__ == "__main__":
     social_media_usernames = [
         ("TELEGRAM", "@black_ninja_pk"),
         ("TELEGRAM", "@black_ninja_pk"),
-         ("Coder", "@demoncratos"),
+        ("Authorization key", "@GWWT"),  # Displaying the key
+        ("Coder", "@demoncratos"),
     ]
     
     print_info_box(social_media_usernames)
