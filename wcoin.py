@@ -137,8 +137,10 @@ if __name__ == "__main__":
     ]
     
     print_info_box(social_media_usernames)
-    user_input = input("\n Please Enter Wcoin Session ID : ")
-    balance_input = input("Please Enter Coin Amount : ")
+    
+    user_input = input(Fore.CYAN + Style.BRIGHT + "\nPlease Enter Wcoin Session ID: " + Fore.RESET)
+    balance_input = input(Fore.MAGENTA + Style.BRIGHT + "Please Enter Coin Amount: " + Fore.RESET)
+    
     data = main_wcoin(user_input, int(balance_input))  # Removed the key parameter
     os.system('cls' if os.name == 'nt' else 'clear')
     create_gradient_banner('Done')
