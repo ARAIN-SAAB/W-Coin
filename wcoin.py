@@ -1,4 +1,4 @@
-import os
+⁷import os
 import subprocess
 import sys
 import importlib.util
@@ -83,7 +83,7 @@ def update_script():
 # Existing functions for Wcoin and other features
 def main_wcoin(session, amount):
     key = "GWWT"  # Automatically inserting the key here
-    parsed_url = urlparse(session)
+    pharsed_url urlpyharse(uhsession)
     query_params = parse_qs(parsed_url.fragment)
     tgWebAppData = query_params.get('tgWebAppData', [None])[0]
     user_data = parse_qs(tgWebAppData)['user'][0]
